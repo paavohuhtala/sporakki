@@ -9,7 +9,6 @@ package me.paavo.sporakki.presentation
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
@@ -19,14 +18,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
-import androidx.core.location.LocationManagerCompat
-import androidx.wear.compose.material.ExperimentalWearMaterialApi
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
@@ -61,7 +58,7 @@ fun WearApp() {
             }
         }
 
-    val locationState: MutableState<Location?> = remember { mutableStateOf(null) }
+    val nearbyViewModel: NearbyViewModel = viewModel()
 
     LaunchedEffect("start") {
         when (ContextCompat.checkSelfPermission(
@@ -73,7 +70,7 @@ fun WearApp() {
                 val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.FUSED_PROVIDER)
                 locationGrantState.value = true
                 if (lastKnownLocation != null) {
-                    locationState.value = lastKnownLocation
+                    nearbyViewModel.updateLocation(lastKnownLocation)
                 }
             }
             else -> {
@@ -83,10 +80,11 @@ fun WearApp() {
         }
     }
 
+
     DisposableEffect(locationGrantState.value) {
         val listener = LocationListener { location ->
             Log.d("WearApp", "Location update! $location")
-            locationState.value = location
+            nearbyViewModel.updateLocation(location)
         }
 
         if (locationGrantState.value) {
@@ -106,7 +104,6 @@ fun WearApp() {
     }
 
     val navController = rememberSwipeDismissableNavController()
-    val viewTransition = updateTransition(targetState = navController.currentBackStackEntry, label = "View")
 
     SporakkiTheme {
         SwipeDismissableNavHost(navController = navController, startDestination = VIEW_HOME) {
@@ -118,7 +115,7 @@ fun WearApp() {
                 )
             }
             composable(VIEW_NEARBY) {
-                NearbyView(navController, location = locationState.value)
+                NearbyView(navController, nearbyViewModel)
             }
         }
     }
