@@ -91,7 +91,7 @@ fun WearApp() {
             Log.d("WearApp", "Requesting location updates...")
             locationManager.requestLocationUpdates(
                 LocationManager.FUSED_PROVIDER,
-                10_000,
+                5_000,
                 0.0F,
                 listener,
                 Looper.getMainLooper()

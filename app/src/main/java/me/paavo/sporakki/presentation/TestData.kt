@@ -3,6 +3,15 @@ package me.paavo.sporakki.presentation
 val testStops = listOf(
     Stop(
         stopType = StopType.Tram,
+        id = "baz",
+        name = "Pyöveli Gunnarsonin Katu",
+        distance = 4500,
+        stopTimes = listOf(
+            StopTime(name ="506", timeToDeparture = 8)
+        )
+    ),
+    Stop(
+        stopType = StopType.Tram,
         id = "foo",
         name = "Arabiankatu",
         distance = 50,
@@ -16,15 +25,6 @@ val testStops = listOf(
             StopTime(name = "74", timeToDeparture = 1),
             StopTime(name = "55", timeToDeparture = 14),
             StopTime(name = "506", timeToDeparture = 17)
-        )
-    ),
-    Stop(
-        stopType = StopType.Tram,
-        id = "baz",
-        name = "Pyöveli Gunnarsonin Katu",
-        distance = 4500,
-        stopTimes = listOf(
-            StopTime(name ="506", timeToDeparture = 8)
         )
     ),
 )

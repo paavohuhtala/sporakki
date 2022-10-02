@@ -99,6 +99,7 @@ private fun convertStop(
         id = node.stop!!.gtfsId,
         name = node.stop.name,
         distance = node.distance!!,
+        platform = node.stop.platformCode,
         stopTimes = node.stop.stoptimesWithoutPatterns.orEmpty().map { stopTime ->
             val serviceDay = LocalDateTime.ofEpochSecond(
                 stopTime!!.serviceDay!!,

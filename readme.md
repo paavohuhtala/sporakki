@@ -17,4 +17,4 @@ HSL timetables for Wear OS
 
 ## License
 
-See [./license.md].
+See [license.md](./license.md).

@@ -27,6 +27,12 @@ fun StopCard(stop: Stop) {
         contentColor = Color.White,
         onClick = {}
     ) {
+        val title = if (stop.platform != null) {
+            "${stop.name} (${stop.platform})"
+        } else {
+            stop.name
+        }
+
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -34,7 +40,7 @@ fun StopCard(stop: Stop) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column {
-                    Text(text = stop.name)
+                    Text(text = title)
                     Text(
                         fontSize = 12.sp,
                         text = "${stop.distance}\u00A0m"
