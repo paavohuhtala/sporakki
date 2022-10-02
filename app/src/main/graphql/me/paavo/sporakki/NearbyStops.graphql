@@ -1,0 +1,28 @@
+query NearbyStops($lat: Float!, $lon: Float!, $radius: Int!, $numberOfDepartures: Int = 3, $startTime: Long!) {
+    stopsByRadius(lat: $lat, lon: $lon, radius: $radius) {
+        edges {
+            node {
+                stop {
+                    gtfsId
+                    name
+                    platformCode
+                    vehicleMode
+                    stoptimesWithoutPatterns(numberOfDepartures: $numberOfDepartures, startTime: $startTime) {
+                        serviceDay,
+                        realtimeArrival,
+                        scheduledArrival,
+                        headsign,
+                        trip {
+                            route {
+                                id,
+                                shortName,
+                                longName,
+                            }
+                        }
+                    }
+                }
+                distance
+            }
+        }
+    }
+}
